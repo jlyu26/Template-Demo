@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+          integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
+            integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+            crossorigin="anonymous"></script>
+    <title>Demo</title>
+</head>
+<body>
+<script>
+    var selctedTable = "table.csv";
+
+    function loadTable(table) {
+        $.ajax({
+            type: "GET",
+            url: table,
+            dataType: "text",
+            success: function (response) {
+                data = $.csv.toArrays(response);
+                generateHtmlTable(data);
+            }
+        });
+
+        function generateHtmlTable(data) {
+            var html = '<table  class="table table-condensed table-hover">';
+
+            if (typeof(data[0]) === 'undefined') {
+                return null;
+            } else {
+                $.each(data, function (index, row) {
+                    //bind header
+                    if (index == 0) {
+                        html += '<thead>';
+                        html += '<tr>';
+                        $.each(row, function (index, colData) {
+                            html += '<th>';
+                            html += colData;
+                            html += '</th>';
+                        });
+                        html += '</tr>';
+                        html += '</thead>';
+                        html += '<tbody>';
+                    } else {
+                        html += '<tr>';
+                        $.each(row, function (index, colData) {
+                            html += '<td>';
+                            html += colData;
+                            html += '</td>';
+                        });
+                        html += '</tr>';
+                    }
+                });
+                html += '</tbody>';
+                html += '</table>';
+                $('#csv-display').append(html);
+            }
+        }
+    }
+
+    loadTable(selctedTable);
+
+    $(document).ready(function () {
+        $(".btn-primary").click(function () {
+            console.log(this.innerHTML);
+            $(".btn-secondary").html("Sub-button for " + this.id);
+        })
+    });
+
+
+</script>
+<style>
+    #pic-container, .btn {
+        margin-bottom: 1rem;
+    }
+</style>
+<div class="container">
+    <h1>Title</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <div id="pri-button-container">
+                <button id="Btn-1" type="button" class="btn btn-primary btn-lg btn-block">Button 1</button>
+                <button id="Btn-2" type="button" class="btn btn-primary btn-lg btn-block">Button 2</button>
+                <button id="Btn-3" type="button" class="btn btn-primary btn-lg btn-block">Button 3</button>
+            </div>
+        </div>
+        <div class="col-md-9 col-sm-12">
+            <div id="sub-button-container">
+                <button type="button" class="btn btn-secondary">Sub-button</button>
+                <button type="button" class="btn btn-secondary">Sub-button</button>
+                <button type="button" class="btn btn-secondary">Sub-button</button>
+                ... ...
+                <button type="button" class="btn btn-secondary">Sub-button</button>
+            </div>
+            <div id="pic-table-container">
+                <div id="pic-container" class="row">
+                    <div class="col">
+                        <img src="http://via.placeholder.com/360x240" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col">
+                        <img src="http://via.placeholder.com/360x240" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col">
+                        <img src="http://via.placeholder.com/360x240" class="img-fluid" alt="Responsive image">
+                    </div>
+                </div>
+                <div id="csv-display" class="table-responsive"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
