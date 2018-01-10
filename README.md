@@ -1,12 +1,14 @@
 # Template-Demo
 
-Online Demo: [Click Here](https://jlyu26.github.io/Template-Demo/)
+**Online Demo:** [Click Here](https://jlyu26.github.io/Template-Demo/)
 
-Screenshots:
+**Screenshots:**<br>
 
-Desktop:
-<img width="901" alt="demo-desktop" src="https://user-images.githubusercontent.com/20265633/34705798-08431160-f4fb-11e7-81d4-aa2da625353e.PNG">
+**Desktop:**<br>
+<img width="886" alt="desktop" src="https://user-images.githubusercontent.com/20265633/34757042-b2428d50-f5c6-11e7-8a2f-049e4c6bf32f.PNG">
 
-Mobile:
-<img width="223" alt="demo-mobile" src="https://user-images.githubusercontent.com/20265633/34705800-0a7f6de8-f4fb-11e7-95f1-faebe4a1c67f.PNG">
+
+**Mobile:**<br>
+<img width="225" alt="mobile" src="https://user-images.githubusercontent.com/20265633/34757047-bc13da0a-f5c6-11e7-8528-de1b3a805f10.PNG">
+
 

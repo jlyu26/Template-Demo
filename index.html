@@ -19,62 +19,112 @@
 </head>
 <body>
 <script>
-    var selctedTable = "table.csv";
 
-    function loadTable(table) {
-        $.ajax({
-            type: "GET",
-            url: table,
-            dataType: "text",
-            success: function (response) {
-                data = $.csv.toArrays(response);
-                generateHtmlTable(data);
-            }
-        });
+    // Customize button and sub-button names
+    var btnName = {btn1: "Button 1", btn2: "Button 2", btn3: "Button 3"},
+        subName = {
+            sub1: "S-Button 1",
+            sub2: "S-Button 2",
+            sub3: "S-Button 3",
+            sub4: "S-Button 4",
+            sub5: "S-Button 5",
+            sub6: "S-Button 6",
+            sub7: "S-Button 7"
+        };
 
-        function generateHtmlTable(data) {
-            var html = '<table  class="table table-condensed table-hover">';
+    var btn = "btn1",
+        sub = "sub1";
 
-            if (typeof(data[0]) === 'undefined') {
-                return null;
-            } else {
-                $.each(data, function (index, row) {
-                    //bind header
-                    if (index == 0) {
-                        html += '<thead>';
-                        html += '<tr>';
-                        $.each(row, function (index, colData) {
-                            html += '<th>';
-                            html += colData;
-                            html += '</th>';
-                        });
-                        html += '</tr>';
-                        html += '</thead>';
-                        html += '<tbody>';
-                    } else {
-                        html += '<tr>';
-                        $.each(row, function (index, colData) {
-                            html += '<td>';
-                            html += colData;
-                            html += '</td>';
-                        });
-                        html += '</tr>';
-                    }
-                });
-                html += '</tbody>';
-                html += '</table>';
-                $('#csv-display').append(html);
+    function loadContent() {
+
+        var tableSrc = "/table/" + btn + sub + ".csv",
+            imgFolderSrc = "/img/" + btn + sub + "/";
+
+        function loadTable(table) {
+            $.ajax({
+                type: "GET",
+                url: table,
+                dataType: "text",
+                success: function (response) {
+                    data = $.csv.toArrays(response);
+                    generateHtmlTable(data);
+                }
+            });
+
+            function generateHtmlTable(data) {
+                var table = '<table  class="table table-condensed table-hover">';
+                if (typeof(data[0]) === 'undefined') {
+                    return null;
+                } else {
+                    $.each(data, function (index, row) {
+                        if (index == 0) {
+                            table += '<thead>';
+                            table += '<tr>';
+                            $.each(row, function (index, colData) {
+                                table += '<th>';
+                                table += colData;
+                                table += '</th>';
+                            });
+                            table += '</tr>';
+                            table += '</thead>';
+                            table += '<tbody>';
+                        } else {
+                            table += '<tr>';
+                            $.each(row, function (index, colData) {
+                                table += '<td>';
+                                table += colData;
+                                table += '</td>';
+                            });
+                            table += '</tr>';
+                        }
+                    });
+                    table += '</tbody>';
+                    table += '</table>';
+                    $('#csv-display').append(table);
+                }
             }
         }
+
+        function loadImage() {
+            var i = 0;
+            $("img").each(function () {
+                    var imgSrc = imgFolderSrc + i + ".png";
+                    $(this).attr("src", imgSrc);
+                    i++;
+                }
+            )
+        }
+
+        loadImage();
+        loadTable(tableSrc);
     }
 
-    loadTable(selctedTable);
-
     $(document).ready(function () {
-        $(".btn-primary").click(function () {
-            console.log(this.innerHTML);
-            $(".btn-secondary").html("Sub-button for " + this.id);
+
+        loadContent();
+
+        $(".btn-primary").each(function () {
+            $(this).html(btnName[this.id]);
         })
+
+        $(".btn-secondary").each(function () {
+            $(this).html(subName[this.id]);
+        })
+
+        $(".btn-primary").click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+            btn = $(this).attr("id");
+            $("table").remove();
+            loadContent();
+        })
+
+        $(".btn-secondary").click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+            sub = $(this).attr("id");
+            $("table").remove();
+            loadContent();
+        })
+
     });
 
 
@@ -83,25 +133,38 @@
     #pic-container, .btn {
         margin-bottom: 1rem;
     }
+
+    .btn-primary {
+        background-color: #3B9AFF;
+        border-color: #3B9AFF;
+    }
+
+    .btn-secondary {
+        background-color: #BBB;
+        border-color: #BBB;
+    }
+
 </style>
 <div class="container">
     <h1>Title</h1>
     <hr>
     <div class="row">
         <div class="col-md-3 col-sm-12">
-            <div id="pri-button-container">
-                <button id="Btn-1" type="button" class="btn btn-primary btn-lg btn-block">Button 1</button>
-                <button id="Btn-2" type="button" class="btn btn-primary btn-lg btn-block">Button 2</button>
-                <button id="Btn-3" type="button" class="btn btn-primary btn-lg btn-block">Button 3</button>
+            <div id="pri-button-container" class="pri-btn-group" role="group">
+                <button id="btn1" type="button" class="btn btn-primary btn-lg btn-block active">Button 1</button>
+                <button id="btn2" type="button" class="btn btn-primary btn-lg btn-block">Button 2</button>
+                <button id="btn3" type="button" class="btn btn-primary btn-lg btn-block">Button 3</button>
             </div>
         </div>
         <div class="col-md-9 col-sm-12">
-            <div id="sub-button-container">
-                <button type="button" class="btn btn-secondary">Sub-button</button>
-                <button type="button" class="btn btn-secondary">Sub-button</button>
-                <button type="button" class="btn btn-secondary">Sub-button</button>
-                ... ...
-                <button type="button" class="btn btn-secondary">Sub-button</button>
+            <div id="sub-button-container" class="sub-btn-group" role="group">
+                <button id="sub1" type="button" class="btn btn-secondary active">Sub-button</button>
+                <button id="sub2" type="button" class="btn btn-secondary">Sub-button</button>
+                <button id="sub3" type="button" class="btn btn-secondary">Sub-button</button>
+                <button id="sub4" type="button" class="btn btn-secondary">Sub-button</button>
+                <button id="sub5" type="button" class="btn btn-secondary">Sub-button</button>
+                <button id="sub6" type="button" class="btn btn-secondary">Sub-button</button>
+                <button id="sub7" type="button" class="btn btn-secondary">Sub-button</button>
             </div>
             <div id="pic-table-container">
                 <div id="pic-container" class="row">
